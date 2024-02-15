@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<head>
+    <title>カレンダー</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="calendar_style.css">
+</head>
+<body>
+    <div id="app"></div>
+</body>
+<script type="text/javascript">
+    const myApp = document.querySelector("#app");
+    
+    const ctl = {yearchg:true,monthchg:true,yearText:"",monthText:""};
+    fetch("./calendar_data.json").then(
+        (response)=>{
+            if(!response.ok){
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        }
+    ).then(
+        (data)=>{
+            for (const day of data.calendar){
+                console.log(day.date);
+                addCalendar(day);
+            }
+        }
+    );
+    function addCalendar(day){
+        let yearHeader = document.createElement("h2");
+        let monthHeader = document.createElement("div");
+        let yyyy = day.date.slice(0,4);
+        let mm = day.date.slice(5,7);
+        let dd = day.date.slice(8,10);
+        if(ctl.yearText != yyyy){
+            ctl.yearchg=true;
+        }
+        if(ctl.monthText != mm){
+            ctl.monthchg=true;
+        }
+        if(ctl.yearchg){
+            ctl.yearText = day.date.slice(0,4);
+            yearHeader.textContent = ctl.yearText;
+            myApp.appendChild(yearHeader);
+            ctl.yearchg=false;
+        } 
+        if(ctl.monthchg){
+            let monthBlock = document.createElement("div");
+            let weeklyTable = document.createElement("table");
+            let weeklyTableHead = document.createElement("tr");
+            let weeklyTableRow = document.createElement("tr");
+
+            ctl.monthText = mm;
+            monthHeader.textContent = parseInt(ctl.monthText) + "月";
+            
+            monthBlock.appendChild(monthHeader);
+            monthHeader.setAttribute("class","monthHead");
+
+            weeklyTable.appendChild(weeklyTableHead);
+            monthBlock.appendChild(weeklyTable);
+            monthBlock.setAttribute("class","monthbox");
+            
+            myApp.appendChild(monthBlock);
+            weeklyTableHead.outerHTML = "<tr><th class='holiday'>日</th><th>月</th><th>火</th><th>水</th><th>木</th><th>金</th><th class='saturday'>土</th></tr>"
+
+            let weeknum = parseInt(day.week);
+            let i = 0;
+            rowEl = "";
+            while(i < weeknum){
+                rowEl += "<td>&nbsp;</td>";
+                i++;
+            }
+            if(parseInt(day.holiday) == 1 || parseInt(day.week) == 0){
+                rowEl +="<td class='holiday'>"
+            } else if(parseInt(day.week) == 6){
+                rowEl +="<td class='saturday'>"
+            } else {
+                rowEl +="<td>"
+            }
+            rowEl += parseInt(dd) + "</td></tr>"
+            weeklyTableRow.innerHTML = weeklyTableRow.innerHTML + rowEl;
+            console.log(weeklyTableRow);
+            weeklyTable.appendChild(weeklyTableRow);
+            ctl.monthchg=false;
+        } else {
+            let monthBlock = myApp.lastElementChild;
+            let weeklyTable = monthBlock.lastElementChild;
+            let weeklyTableRow;
+            let dateTd = document.createElement("td");
+            if(parseInt(day.holiday) == 1 || parseInt(day.week) == 0){
+                dateTd.setAttribute("class","holiday");
+            } else if(parseInt(day.week) == 6) {
+                dateTd.setAttribute("class","saturday");
+            }
+            dateTd.innerHTML = "<td>" + parseInt(dd) + "</td>";
+            
+            if(parseInt(day.week) == 0 ){
+                weeklyTableRow = document.createElement("tr");
+                weeklyTable.appendChild(weeklyTableRow);
+            } else {
+                weeklyTableRow = weeklyTable.lastElementChild;
+            }
+            weeklyTableRow.appendChild(dateTd);
+        }
+    }
+</script>

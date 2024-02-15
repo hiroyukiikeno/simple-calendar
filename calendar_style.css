@@ -1,0 +1,15 @@
+.holiday{
+    background-color: #ffaaaa;
+}
+.saturday{
+    background-color: #9999ff;
+}
+td{
+    text-align: center;
+}
+.monthbox{
+    padding: 10.5px;
+}
+.monthHead{
+    font-size: 1.6rem;
+}
