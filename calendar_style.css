@@ -7,9 +7,18 @@
 td{
     text-align: center;
 }
+td:hover{
+    background-color: lightblue;
+}
 .monthbox{
     padding: 10.5px;
 }
 .monthHead{
     font-size: 1.6rem;
+}
+.today{
+    text-decoration: underline;
+}
+.past{
+    color:#a9a9a9;
 }

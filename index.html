@@ -12,6 +12,7 @@
     const myApp = document.querySelector("#app");
     
     const ctl = {yearchg:true,monthchg:true,yearText:"",monthText:""};
+    const today = new Date().toISOString().slice(0,10);
     fetch("./calendar_data.json").then(
         (response)=>{
             if(!response.ok){
@@ -78,7 +79,7 @@
             } else {
                 rowEl +="<td>"
             }
-            rowEl += parseInt(dd) + "</td></tr>"
+            rowEl += dateDecoration(day,dd,today) + "</td></tr>"
             weeklyTableRow.innerHTML = weeklyTableRow.innerHTML + rowEl;
             console.log(weeklyTableRow);
             weeklyTable.appendChild(weeklyTableRow);
@@ -93,7 +94,7 @@
             } else if(parseInt(day.week) == 6) {
                 dateTd.setAttribute("class","saturday");
             }
-            dateTd.innerHTML = "<td>" + parseInt(dd) + "</td>";
+            dateTd.innerHTML = "<td>" + dateDecoration(day,dd,today) + "</td>";
             
             if(parseInt(day.week) == 0 ){
                 weeklyTableRow = document.createElement("tr");
@@ -102,6 +103,18 @@
                 weeklyTableRow = weeklyTable.lastElementChild;
             }
             weeklyTableRow.appendChild(dateTd);
+        }
+        function dateDecoration(day,dd,today){
+            console.log("day: " + day.date + " today: " + today);
+            dayvalue = new Date(day.date);
+            todayvalue = new Date(today);
+            if(day.date == today){
+                return "<span class='today'>" + parseInt(dd) + "</span>"
+            } else if(dayvalue < todayvalue){
+                return "<span class='past'>" + parseInt(dd) + "</span>"
+            } {
+                return "" + parseInt(dd) + "";
+            }
         }
     }
 </script>
