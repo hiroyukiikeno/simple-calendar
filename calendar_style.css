@@ -4,6 +4,9 @@
 .saturday{
     background-color: #9999ff;
 }
+h2{
+    width: 100%;
+}
 td{
     text-align: center;
 }
@@ -21,4 +24,11 @@ td:hover{
 }
 .past{
     color:#a9a9a9;
+}
+#app{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    flex-wrap: wrap;
 }
