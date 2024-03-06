@@ -4,6 +4,10 @@
 .saturday{
     background-color: #9999ff;
 }
+body{
+    display: flex;
+    justify-content: center;
+}
 h2{
     width: 100%;
 }
@@ -31,4 +35,5 @@ td:hover{
     align-items: flex-start;
     justify-content: center;
     flex-wrap: wrap;
+    max-width: 900px;
 }
